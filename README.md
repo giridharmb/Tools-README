@@ -193,3 +193,122 @@ tar -cJf archive.tar.xz directory/
 # Split into 1GB chunks
 split -b 1G archive.tar.gz.gpg archive.part.
 ```
+
+# Simple Directory Encryption Guide for macOS (No Compression)
+
+A straightforward guide to create encrypted archives without compression.
+
+## Prerequisites
+
+```bash
+# Install GPG if not already installed
+brew install gnupg
+```
+
+## Basic Commands
+
+### Creating and Encrypting
+
+```bash
+# Step 1: Create tar file (without compression)
+tar -cf my_archive.tar /path/to/directory
+
+# Step 2: Encrypt the tar file
+gpg -c my_archive.tar
+
+# Step 3: (Optional) Remove the original tar file
+rm my_archive.tar
+```
+
+### Decrypting and Extracting
+
+```bash
+# Step 1: Decrypt the file
+gpg -d my_archive.tar.gpg > my_archive.tar
+
+# Step 2: Extract the tar file
+tar -xf my_archive.tar
+
+# Step 3: (Optional) Clean up
+rm my_archive.tar
+```
+
+## One-Line Commands
+
+### Encrypt Directory
+```bash
+# Create tar and encrypt in one go
+tar -cf - /path/to/directory | gpg -c > my_archive.tar.gpg
+```
+
+### Decrypt and Extract
+```bash
+# Decrypt and extract in one go
+gpg -d my_archive.tar.gpg | tar -xf -
+```
+
+## Command Options Explained
+
+### tar commands
+- `-c` : Create a new archive
+- `-f` : Specify the filename
+- `-x` : Extract files
+- `-v` : (Optional) Verbose mode to see progress
+
+### gpg commands
+- `-c` : Encrypt with symmetric cipher (password)
+- `-d` : Decrypt
+
+## Examples
+
+```bash
+# Example 1: Encrypt a Documents folder
+tar -cf - ~/Documents/important_folder | gpg -c > important.tar.gpg
+
+# Example 2: Decrypt to a specific location
+cd ~/Desktop && gpg -d ~/important.tar.gpg | tar -xf -
+```
+
+## Notes
+
+1. The `.tar.gpg` extension indicates an encrypted tar file
+2. Always remember your password - there's no way to recover it
+3. Test the decryption process before deleting originals
+4. No compression means larger files but faster processing
+
+## Troubleshooting
+
+1. If you get a "gpg: decryption failed" error:
+   - Double-check your password
+   - Ensure the .gpg file isn't corrupted
+
+2. If you see "tar: Error is not recoverable":
+   - Check if you have enough disk space
+   - Verify the file permissions
+
+# Quick Reference Card
+
+## Create & Encrypt
+```bash
+# Basic (two steps)
+tar -cf docs.tar Documents/
+gpg -c docs.tar
+
+# One-liner
+tar -cf - Documents/ | gpg -c > docs.tar.gpg
+```
+
+## Decrypt & Extract
+```bash
+# Basic (two steps)
+gpg -d docs.tar.gpg > docs.tar
+tar -xf docs.tar
+
+# One-liner
+gpg -d docs.tar.gpg | tar -xf -
+```
+
+## Check Contents (after decrypting)
+```bash
+tar -tf docs.tar
+```
