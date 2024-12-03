@@ -312,3 +312,58 @@ gpg -d docs.tar.gpg | tar -xf -
 ```bash
 tar -tf docs.tar
 ```
+
+#### GIT Feature Tags
+
+> For a quick checkpoint tag (lightweight)
+
+```bash
+# Tag the current commit
+git tag feature-checkpoint
+
+# Tag a specific commit
+git tag feature-checkpoint <commit-hash>
+```
+
+> For a more detailed checkpoint tag (annotated, recommended for features)
+
+```bash
+# Create an annotated tag with a message
+git tag -a feature-checkpoint -m "Completed user authentication feature"
+
+# Tag a specific commit with annotation
+git tag -a feature-checkpoint -m "Completed user authentication feature" <commit-hash>
+```
+
+> To push the tag to remote
+
+```bash
+# Push a specific tag
+git push origin feature-checkpoint
+
+# Push all tags
+git push origin --tags
+```
+
+> Useful tag management commands
+
+```bash
+# List all tags
+git tag
+
+# Delete a local tag
+git tag -d feature-checkpoint
+
+# Delete a remote tag
+git push origin --delete feature-checkpoint
+
+# Check tag details
+git show feature-checkpoint
+```
+
+> Best practices
+
+- Use semantic versioning for release tags (e.g., v1.2.3)
+- Use descriptive names for feature checkpoints (e.g., auth-feature-complete)
+- Always use annotated tags (-a flag) for important features or releases
+- Include meaningful messages with annotated tags
